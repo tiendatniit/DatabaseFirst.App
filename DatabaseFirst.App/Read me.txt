@@ -1,3 +1,5 @@
+https://learn.microsoft.com/en-us/ef/core/cli/dotnet
+
 Installing the tools
 dotnet ef can be installed as either a global or local tool. Most developers prefer installing dotnet ef as a global tool using the following command:
 
