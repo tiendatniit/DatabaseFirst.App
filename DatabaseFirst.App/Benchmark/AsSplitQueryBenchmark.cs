@@ -6,7 +6,7 @@ namespace DatabaseFirst.App.Benchmark;
 [RPlotExporter]
 [MemoryDiagnoser]
 [Config(typeof(Config))]
-public class NSelectQueryBenchmark
+public class NSelectQueryBenchmark : Config
 {
     private readonly int orderId = 46666;
 

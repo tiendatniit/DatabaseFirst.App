@@ -1,9 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using System.Threading.Tasks;
+using BenchmarkDotNet.Analysers;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Engines;
+using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Jobs;
 using DatabaseFirst.App.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore;
 namespace DatabaseFirst.App.Benchmark;
 
 [RPlotExporter]
-[MemoryDiagnoser]
+[MinColumn, MaxColumn]
 [Config(typeof(Config))]
-public class BenchmarkPerson : Config
+public class AsyncMethodBenchmark : Config
 {
     [Benchmark]
     public IList<Person> GetPeopleNotOptmizedYet()
@@ -103,9 +103,17 @@ public class Config : ManualConfig
 {
     public Config()
     {
-        Add(Job.Dry);
+        Add(Job.Dry); 
+        //AddLogger(ConsoleLogger.Default);
+        AddColumn(TargetMethodColumn.Method, StatisticColumn.StdDev);
+        AddColumn(TargetMethodColumn.Method, StatisticColumn.Error);
+        AddColumn(TargetMethodColumn.Method, StatisticColumn.OperationsPerSecond);
+        AddDiagnoser();
+        AddAnalyser(EnvironmentAnalyser.Default);
+        AddEventProcessor();
+        //UnionRule = ConfigUnionRule.AlwaysUseLocal;
         // You can add custom tags per each method using Columns
-        Add(new TagColumn("Method", name => name));
         //Add(new TagColumn("Action Name", name => name.Substring(3)));
+
     }
 }

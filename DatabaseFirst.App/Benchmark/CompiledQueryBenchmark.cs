@@ -7,7 +7,7 @@ namespace DatabaseFirst.App.Benchmark;
 [RPlotExporter]
 [MemoryDiagnoser]
 [Config(typeof(Config))]
-public class CompiledQueryBenchmark
+public class CompiledQueryBenchmark : Config
 {
     [Benchmark]
     public async Task GetProductsWithUnCompiledQuery()

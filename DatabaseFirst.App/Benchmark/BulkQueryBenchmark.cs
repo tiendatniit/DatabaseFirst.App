@@ -6,7 +6,7 @@ namespace DatabaseFirst.App.Benchmark;
 [RPlotExporter]
 [MemoryDiagnoser]
 [Config(typeof(Config))]
-public class BulkQueryBenchmark
+public class BulkQueryBenchmark : Config
 {
     [Benchmark]
     public async Task Update_By_Loop_Query()
@@ -47,6 +47,7 @@ public class BulkQueryBenchmark
 
 
     }
+
     [Benchmark]
     public async Task Bulk_Update_By_Single_Query()
     {

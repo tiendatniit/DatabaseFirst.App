@@ -9,7 +9,7 @@ namespace DatabaseFirst.App.Benchmark;
 [RPlotExporter]
 [MemoryDiagnoser]
 [Config(typeof(Config))]
-public class UsingRawQueryBenchmark
+public class UsingRawQueryBenchmark : Config
 {
     private readonly int orderId = 46666;
 

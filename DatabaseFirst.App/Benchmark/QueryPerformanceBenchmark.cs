@@ -6,7 +6,7 @@ namespace DatabaseFirst.App.Benchmark;
 [RPlotExporter]
 [MemoryDiagnoser]
 [Config(typeof(Config))]
-public class QueryPerformanceBenchmark
+public class QueryPerformanceBenchmark : Config
 {
     private readonly AdventureWorks2019Context dbContext;
 

@@ -7,7 +7,7 @@ namespace DatabaseFirst.App.Benchmark;
 [RPlotExporter]
 [MemoryDiagnoser]
 [Config(typeof(Config))]
-public class AsNoTrackingBenchmark
+public class AsNoTrackingBenchmark : Config
 {
     private readonly AdventureWorks2019Context dbContext;
 
