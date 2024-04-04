@@ -15,38 +15,46 @@ public class QueryPerformanceBenchmark : Config
         dbContext = new AdventureWorks2019Context();
     }
 
-    //[Benchmark]
-    //public async Task<List<Product>> QueryNotOptimize()
-    //{
-    //    var utcNow = DateTime.UtcNow;
-    //    var tenMonthsAgo = utcNow.AddMonths(-10);
-    //    var orders = await dbContext.Products.ToListAsync();
-
-    //    var myOrder = orders.Where(o => o.ModifiedDate > tenMonthsAgo && o.ModifiedDate < utcNow)
-    //        .OrderBy(o => o.ModifiedDate).ToList();
-
-    //    return orders;
-    //}
-
     [Benchmark]
-    public async Task<List<Product>> QueryAlreadyOptimize()
+    public async Task<List<Product>> Query_NotOptimize()
     {
         var utcNow = DateTime.UtcNow;
         var tenMonthsAgo = utcNow.AddMonths(-10);
-        var pageNumber = 2;
+        var orders = await dbContext.Products.ToListAsync();
+
+        var myOrder = orders.Where(o => o.ModifiedDate > tenMonthsAgo && o.ModifiedDate < utcNow)
+            .OrderBy(o => o.ModifiedDate).ToList();
+
+        return orders;
+    }
+
+    [Benchmark]
+    public async Task<List<ProductDataModel>> Query_Fully_Optimize()
+    {
+        var utcNow = DateTime.UtcNow;
+        var tenMonthsAgo = utcNow.AddMonths(-10);
+        var pageNumber = 1;
         var pageSize = 10;
+
         var result = await dbContext.Products.AsNoTracking()
             .Where(o => o.ModifiedDate > tenMonthsAgo && o.ModifiedDate < utcNow)
-            .OrderBy(o => o.ModifiedDate).Skip((pageNumber - 1) * pageSize)
+            .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .Select(p => new Product
+            .Select(x => new ProductDataModel
             {
-                ModifiedDate = utcNow,
-                Color = p.Color,
-                Name = p.Name,
+                ModifiedDate = x.ModifiedDate,
+                Class = x.Class,
+                Color = x.Color,
             })
             .ToListAsync();
 
         return result;
     }
+}
+
+public class ProductDataModel
+{
+    public DateTime ModifiedDate { get; set; }
+    public string? Class { get; set; }
+    public string? Color { get; set; }
 }

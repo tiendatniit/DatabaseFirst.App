@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DatabaseFirst.App.Benchmark;
 
 [RPlotExporter]
-[MinColumn, MaxColumn]
+[MemoryDiagnoser]
 [Config(typeof(Config))]
 public class AsyncMethodBenchmark : Config
 {
@@ -103,17 +103,18 @@ public class Config : ManualConfig
 {
     public Config()
     {
-        Add(Job.Dry); 
-        //AddLogger(ConsoleLogger.Default);
+        AddJob(Job.Dry);
+        //AddColumn(TargetMethodColumn.Method, StatisticColumn.Max);
+        //AddColumn(TargetMethodColumn.Method, StatisticColumn.Kurtosis);
         AddColumn(TargetMethodColumn.Method, StatisticColumn.StdDev);
         AddColumn(TargetMethodColumn.Method, StatisticColumn.Error);
         AddColumn(TargetMethodColumn.Method, StatisticColumn.OperationsPerSecond);
-        AddDiagnoser();
-        AddAnalyser(EnvironmentAnalyser.Default);
-        AddEventProcessor();
+
+        //AddDiagnoser();
+        //AddAnalyser(EnvironmentAnalyser.Default);
+        //AddEventProcessor();
         //UnionRule = ConfigUnionRule.AlwaysUseLocal;
         // You can add custom tags per each method using Columns
-        //Add(new TagColumn("Action Name", name => name.Substring(3)));
 
     }
 }

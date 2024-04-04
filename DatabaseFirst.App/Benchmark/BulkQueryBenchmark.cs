@@ -22,7 +22,6 @@ public class BulkQueryBenchmark : Config
                 dbContext.SaveChanges();
             }
         }
-
     }
 
     [Benchmark]
@@ -44,12 +43,25 @@ public class BulkQueryBenchmark : Config
 
             await dbContext.SaveChangesAsync();
         }
-
-
     }
 
     [Benchmark]
-    public async Task Bulk_Update_By_Single_Query()
+    public async Task Bulk_Update_By_Using_AsNoTracking_Query()
+    {
+        using (var dbContext = new AdventureWorks2019Context())
+        {
+            var products = await dbContext.Products.AsNoTracking().Where(x => x.ProductId > 1).ToListAsync();
+            products.ForEach(x => x.ModifiedDate = DateTime.UtcNow);
+
+            dbContext.Products.UpdateRange(products);
+
+            await dbContext.SaveChangesAsync();
+        }
+    }
+
+
+    [Benchmark]
+    public async Task Bulk_Update_Not_Using_AsNoTracking_Query()
     {
         using (var dbContext = new AdventureWorks2019Context())
         {

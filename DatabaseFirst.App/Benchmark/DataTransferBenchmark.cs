@@ -20,13 +20,7 @@ public class DataTransferBenchmark : Config
         using (var context = new AdventureWorks2019Context())
         {
             return await context.SalesOrderDetails.AsNoTracking()
-            .Include(wo => wo.SalesOrder).ThenInclude(xx => xx.CreditCard)
-            .Include(wo => wo.SalesOrder).ThenInclude(woo => woo.ShipToAddress)
-            .Include(wo => wo.SalesOrder).ThenInclude(xx => xx.BillToAddress)
-            .Include(wo => wo.SalesOrder).ThenInclude(xx => xx.SalesPerson)
-            .Include(wo => wo.SalesOrder).ThenInclude(xx => xx.ShipMethod)
-            .Include(wo => wo.SalesOrder).ThenInclude(xx => xx.Customer)
-            .Include(wo => wo.SalesOrder).ThenInclude(xx => xx.SalesOrderHeaderSalesReasons)
+            .Include(wo => wo.SalesOrder)
             .ToListAsync();
         }
     }
@@ -57,7 +51,6 @@ public class DataTransferBenchmark : Config
                 Status = x.SalesOrder.Status,
                 Tax = x.SalesOrder.TaxAmt,
                 CardNumber = x.SalesOrder.CreditCard!.CardNumber!,
-                //Bonus = x.SalesOrder.SalesPerson.Bonus!,
             })
             .ToListAsync();
         }
@@ -71,7 +64,7 @@ public class DataTransferBenchmark : Config
         using (var context = new AdventureWorks2019Context())
         {
             return await context.SalesOrderDetails.AsNoTracking()
-            .Include(wo => wo.SalesOrder).ThenInclude(xx => xx.CreditCard)
+            .Include(wo => wo.SalesOrder)
             .Select(x => new OrderDetails
             {
                 SaleOrderId = x.SalesOrderId,
